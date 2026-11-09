@@ -1,0 +1,32 @@
+name: Sync family tree
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"   # every 15 minutes
+  workflow_dispatch:          # "Run workflow" button for an instant sync
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-family
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch latest tree from the Family Network
+        run: python3 .github/scripts/sync_family.py
+      - name: Save changes
+        run: |
+          # Keep the schedule alive: GitHub pauses scheduled jobs after 60 days with no commits.
+          if [ -z "$(git log -1 --since='30 days ago' --format=%H)" ]; then date -u +%FT%TZ > data/last-check.txt; fi
+          if [ -n "$(git status --porcelain data)" ]; then
+            git config user.name "MP Family sync"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data
+            git commit -m "Sync family tree from the Family Network"
+            git push
+          fi

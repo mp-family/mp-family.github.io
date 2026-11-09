@@ -1,0 +1,416 @@
+{
+ "id": "mudalappa-puttamma",
+ "name": "Mudalappa and Puttamma",
+ "relation": "Head of the Family",
+ "entryType": "couple",
+ "children": [
+  {
+   "id": "narasimha-m",
+   "name": "Govindaraj",
+   "relation": "Son",
+   "entryType": "individual",
+   "children": [
+    {
+     "id": "person-8007cb72-ee4d-4eb2-9b6c-7b2e56d9c570",
+     "name": "Pushpa",
+     "relation": "Daughter",
+     "entryType": "individual",
+     "children": [
+      {
+       "id": "person-726591a4-0a34-4a83-887f-f7beae955a43",
+       "name": "Mithun",
+       "relation": "Son",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      },
+      {
+       "id": "person-650534db-2661-4eac-8eee-1472b366d1b8",
+       "name": "Chethana",
+       "relation": "Daughter",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      }
+     ],
+     "tooltip": ""
+    },
+    {
+     "id": "person-f7f89906-b742-4a18-98d6-a5d764ff3d63",
+     "name": "Lakshmi Narayana Swamy",
+     "relation": "Son",
+     "entryType": "individual",
+     "children": [
+      {
+       "id": "person-39141397-073f-455b-ae13-e2d4434b71e2",
+       "name": "Dakshinya",
+       "relation": "Daughter",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      },
+      {
+       "id": "person-c0475ea9-cb9a-42e2-ba88-d92bf9222140",
+       "name": "Nidhi",
+       "relation": "Daughter",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      },
+      {
+       "id": "person-47920ebb-5b11-4e6d-9d76-d840e3518c5c",
+       "name": "Gamana",
+       "relation": "Son",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      }
+     ],
+     "tooltip": ""
+    },
+    {
+     "id": "person-631ab9cb-30fa-4fe4-bf8d-3703a1c0ebdf",
+     "name": "Pavana",
+     "relation": "Son",
+     "entryType": "individual",
+     "children": [
+      {
+       "id": "person-85b394db-94db-4867-986c-f165ba0a4501",
+       "name": "Ganika",
+       "relation": "Daughter",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      },
+      {
+       "id": "person-34456332-cf62-4cec-a752-5fc683c0fd46",
+       "name": "Dushyant",
+       "relation": "Son",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      }
+     ],
+     "tooltip": ""
+    }
+   ],
+   "tooltip": "Wife: Gangamma"
+  },
+  {
+   "id": "srinivasa-m",
+   "name": "Srinivasa",
+   "relation": "Son",
+   "entryType": "individual",
+   "children": [
+    {
+     "id": "person-8066c57a-4d2c-46bf-9b85-c559ffb119ed",
+     "name": "Shruthi",
+     "relation": "Daughter",
+     "entryType": "individual",
+     "children": [
+      {
+       "id": "person-d5962859-ff2a-4c89-a986-723c6dd278c2",
+       "name": "Preetham",
+       "relation": "Son",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      },
+      {
+       "id": "person-62541522-a32c-49f4-b4e3-d7b690a3545f",
+       "name": "Srinika",
+       "relation": "Daughter",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      }
+     ],
+     "birthYear": 1996,
+     "tooltip": ""
+    },
+    {
+     "id": "person-8d1f1dc7-d18b-4ce9-b3b9-3f1e3b21cdcf",
+     "name": "Shilpa",
+     "relation": "Daughter",
+     "entryType": "individual",
+     "children": [
+      {
+       "id": "person-9c2755b2-2581-4466-af69-2742884fe89e",
+       "name": "Bhavyashree",
+       "relation": "Daughter",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      }
+     ],
+     "tooltip": ""
+    }
+   ],
+   "tooltip": "Wife: Janakkamma"
+  },
+  {
+   "id": "govindraj-m",
+   "name": "Narasimha",
+   "relation": "Son",
+   "entryType": "individual",
+   "children": [
+    {
+     "id": "person-021f6903-d443-460e-8921-d1e61b39d603",
+     "name": "Kusuma Rathi",
+     "relation": "Daughter",
+     "entryType": "individual",
+     "children": [
+      {
+       "id": "person-2d06915c-e0fc-4843-bc9d-78fd301a3eef",
+       "name": "Charithya",
+       "relation": "Daughter",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      },
+      {
+       "id": "person-724c6603-0176-4e5b-b17a-f97f86111a1d",
+       "name": "Mokshith",
+       "relation": "Son",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      }
+     ],
+     "tooltip": ""
+    },
+    {
+     "id": "person-643e52d3-e7e9-49dd-a9e9-fd89bc814b36",
+     "name": "Shwetha",
+     "relation": "Daughter",
+     "entryType": "individual",
+     "children": [
+      {
+       "id": "person-dce0baf5-a53b-40ee-a085-91f362f97af2",
+       "name": "Adyanth",
+       "relation": "Son",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      }
+     ],
+     "tooltip": ""
+    },
+    {
+     "id": "person-0f501069-660d-412c-87b8-f8a7b00adf8b",
+     "name": "Anil Kumar",
+     "relation": "Son",
+     "entryType": "individual",
+     "children": [],
+     "birthYear": 1995,
+     "tooltip": ""
+    }
+   ],
+   "tooltip": "Wife: Lakshmi"
+  },
+  {
+   "id": "jayalakshmi-m",
+   "name": "Venkata Lakshmi",
+   "relation": "Daughter",
+   "entryType": "individual",
+   "children": [
+    {
+     "id": "person-c6740eb3-8eff-45e6-b41d-94a2ed47e2f5",
+     "name": "Manjula",
+     "relation": "Daughter",
+     "entryType": "individual",
+     "children": [
+      {
+       "id": "person-da586832-6dfa-46d4-b1c0-b80598ec7d0d",
+       "name": "Vinayak",
+       "relation": "Son",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      },
+      {
+       "id": "person-cf3b9c49-0dd6-47ad-a495-4476c1dfc178",
+       "name": "Soma Shekar",
+       "relation": "Son",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      }
+     ],
+     "tooltip": ""
+    },
+    {
+     "id": "person-08be41d2-492c-4605-8e05-f924b61b9038",
+     "name": "Shaaradha",
+     "relation": "Daughter",
+     "entryType": "individual",
+     "children": [
+      {
+       "id": "person-8677994a-6553-46b5-8d99-20151686215a",
+       "name": "Preethi",
+       "relation": "Daughter",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      },
+      {
+       "id": "person-fd4aabca-09d6-44f7-b97a-fd4926ace4a0",
+       "name": "Kushi",
+       "relation": "Daughter",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      }
+     ],
+     "tooltip": ""
+    },
+    {
+     "id": "person-12264f78-28fa-4f09-9f24-bdc80d6e109e",
+     "name": "Nethravathi",
+     "relation": "Daughter",
+     "entryType": "individual",
+     "children": [
+      {
+       "id": "person-b2d1120c-7593-42ae-8571-1987cdae7e75",
+       "name": "Mourya",
+       "relation": "Son",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      },
+      {
+       "id": "person-053185c4-6bb8-4238-82d3-95ae70f6ec36",
+       "name": "Arjun",
+       "relation": "Son",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      }
+     ],
+     "tooltip": ""
+    }
+   ],
+   "tooltip": "Husband: Ninge Gowda"
+  },
+  {
+   "id": "saroja-m",
+   "name": "Padmavathi",
+   "relation": "Daughter",
+   "entryType": "individual",
+   "children": [
+    {
+     "id": "person-388047af-0e66-47ac-93aa-833f41ef836c",
+     "name": "Shashi Kumar",
+     "relation": "Son",
+     "entryType": "individual",
+     "children": [
+      {
+       "id": "person-dd7508de-b4dd-40f9-8f82-02dc084b1ef0",
+       "name": "Shamitha",
+       "relation": "Daughter",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      },
+      {
+       "id": "person-faea6390-989e-4cfc-9cd8-08c7ce385350",
+       "name": "Sai Manvik Gowda",
+       "relation": "Son",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      }
+     ],
+     "tooltip": ""
+    },
+    {
+     "id": "person-317b38d9-63aa-478f-8a0b-ed9fe1198a37",
+     "name": "Shiva Kumar",
+     "relation": "Son",
+     "entryType": "individual",
+     "children": [
+      {
+       "id": "person-b5f6867d-42b9-42a3-9224-3423a1eef3da",
+       "name": "Poorvika",
+       "relation": "Daughter",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      },
+      {
+       "id": "person-a556cfc4-03fd-4d1b-a1a6-87c1040e52fb",
+       "name": "Ruthvik",
+       "relation": "Son",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      }
+     ],
+     "tooltip": ""
+    }
+   ],
+   "tooltip": "Husband: Kushaalappa"
+  },
+  {
+   "id": "padmavathi-m",
+   "name": "Saroja",
+   "relation": "Daughter",
+   "entryType": "individual",
+   "children": [
+    {
+     "id": "person-c229c55c-614f-4bf9-b1ed-9d8041c29ddb",
+     "name": "Anand",
+     "relation": "Son",
+     "entryType": "individual",
+     "children": [
+      {
+       "id": "person-f29750bc-ae3f-498c-a44a-983b60fbe7f8",
+       "name": "Prartha",
+       "relation": "Son",
+       "entryType": "couple",
+       "children": [],
+       "tooltip": ""
+      }
+     ],
+     "tooltip": ""
+    },
+    {
+     "id": "person-2485b792-48b2-402b-be50-a066ce9096f5",
+     "name": "Kalpana",
+     "relation": "Daughter",
+     "entryType": "individual",
+     "children": [
+      {
+       "id": "person-f7f31aec-b43a-4940-a627-455bbab15fc6",
+       "name": "Harshitha",
+       "relation": "Daughter",
+       "entryType": "individual",
+       "children": [],
+       "tooltip": ""
+      }
+     ],
+     "tooltip": ""
+    }
+   ],
+   "tooltip": "Husband: Govindaraj"
+  },
+  {
+   "id": "person-6fc1af53-5702-48ce-962d-85f916f69b6b",
+   "name": "Jayalakshmi",
+   "relation": "Daughter",
+   "entryType": "individual",
+   "children": [
+    {
+     "id": "person-1aca3d5e-56c5-4b43-87c4-022ceb783680",
+     "name": "Pooja",
+     "relation": "Daughter",
+     "entryType": "individual",
+     "children": [],
+     "tooltip": ""
+    }
+   ],
+   "tooltip": "Husband: Siddalinga"
+  }
+ ],
+ "tooltip": "The founding couple of the MP family network."
+}
