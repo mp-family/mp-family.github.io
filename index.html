@@ -168,7 +168,33 @@ section.block{padding:96px 0}
 .card strong{font:600 1.22rem/1.15 var(--display);color:var(--brown)}
 .card small{font-size:.78rem;color:var(--muted)}
 .card .tag{margin-top:4px;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--c);font-weight:700}
-.empty{text-align:center;color:var(--muted);padding:30px}
+.empty{text-align:center;color:var(--muted);padding:30px;grid-column:1/-1}
+.more-row{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:26px}
+.more-row small{color:var(--muted);font-size:.8rem}
+.more-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:99px;border:1px solid var(--brown);background:var(--paper);color:var(--brown);font-weight:600;cursor:pointer;transition:.25s}
+.more-btn:hover{background:var(--brown);color:#fff}
+.more-btn i{font-style:normal;transition:transform .3s}.more-btn.open i{transform:rotate(180deg)}
+.branch-toggle{display:none;width:100%;margin-top:4px;padding:10px;border-radius:12px;border:1px dashed var(--c);background:transparent;color:var(--c);font-weight:600;cursor:pointer}
+.branch-toggle i{font-style:normal;display:inline-block;transition:transform .3s}.branch.open .branch-toggle i{transform:rotate(180deg)}
+@media(max-width:640px){
+  section.block{padding:70px 0}
+  .grid{grid-template-columns:repeat(3,1fr);gap:10px}
+  .card{padding:14px 6px 12px;gap:3px;border-radius:14px}
+  .card .av{width:46px;height:46px;font-size:.92rem;margin-bottom:4px}
+  .card strong{font-size:1.02rem}
+  .card small{font-size:.66rem;line-height:1.3}
+  .card .tag{font-size:.56rem;letter-spacing:.05em}
+  .filter-chips{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:0 -22px 20px;padding:2px 22px 6px;scrollbar-width:none}
+  .filter-chips::-webkit-scrollbar{display:none}
+  .fchip{flex:none}
+  .toolbar{flex-wrap:nowrap}.toolbar select{max-width:42%}
+  .branches{gap:14px}
+  .branch{padding:18px}
+  .branch .kids{display:none}
+  .branch.open .kids{display:grid;animation:pop .35s}
+  .branch-toggle{display:block}
+  .branch-meta{margin:12px 0 10px}
+}
 @keyframes pop{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
 
 /* gallery */
@@ -319,6 +345,7 @@ dialog[open]{animation:pop .3s}
     </div>
     <div class="filter-chips" id="branchFilter"></div>
     <div class="grid" id="memberGrid"></div>
+    <div class="more-row" id="moreRow" hidden><button class="more-btn" id="moreBtn" type="button"><span></span> <i>▾</i></button><small id="moreNote"></small></div>
   </div>
 </section>
 
@@ -373,6 +400,10 @@ const FOUNDERS_PHOTO = 'photos/founders.jpg';   // photo of Mudalappa & Puttamma
 
 const GALLERY = [
   { src: 'photos/founders.jpg', caption: 'Mudalappa & Puttamma, the founders of our family' },
+  { src: 'photos/reception-group.jpg', caption: 'The whole family together at a reception' },
+  { src: 'photos/celebration-group.jpg', caption: 'All dressed up for the celebration' },
+  { src: 'photos/fun-pose.jpg', caption: 'Striking a pose, family style' },
+  { src: 'photos/family-dinner.jpg', caption: 'Cheers! A family get-together' },
   // { src: 'photos/family-reunion.jpg', caption: 'Family reunion' },
   // { src: 'photos/ugadi-2025.jpg',     caption: 'Ugadi celebrations, 2025' },
   // { src: 'https://example.com/photo.jpg', caption: 'Grandparents' },
@@ -545,12 +576,19 @@ $('#branchList').innerHTML = branches.map((b, i) => {
       <div class="kid"><button type="button" data-id="${k.id}">${esc(k.name)} <small style="color:var(--muted);font-weight:400">· ${esc(k.relation)}</small></button>
       ${(k.children || []).length ? `<div class="chips">${k.children.map(g => `<button class="chip" type="button" data-id="${g.id}">${esc(g.name)}</button>`).join('')}</div>` : ''}</div>`).join('')}
     </div>
+    <button class="branch-toggle" type="button" aria-expanded="false"><span>Show family</span> <i>▾</i></button>
   </article>`;
 }).join('');
-$('#branchList').addEventListener('click', e => { const t = e.target.closest('[data-id]'); if (t) openPerson(t.dataset.id); });
+$('#branchList').addEventListener('click', e => {
+  const tg = e.target.closest('.branch-toggle');
+  if (tg) { const card = tg.closest('.branch'), open = card.classList.toggle('open');
+    tg.setAttribute('aria-expanded', open); tg.querySelector('span').textContent = open ? 'Hide family' : 'Show family'; return; }
+  const t = e.target.closest('[data-id]'); if (t) openPerson(t.dataset.id);
+});
 
 /* ---------- members ---------- */
-const state = {q: '', branch: '', gen: ''};
+const state = {q: '', branch: '', gen: '', expanded: false};
+const PREVIEW = () => innerWidth <= 640 ? 9 : 12;
 for (let g = 1; g <= maxGen; g++) $('#genSel').insertAdjacentHTML('beforeend', `<option value="${g}">${GEN_NAMES[g] || 'Generation ' + g}</option>`);
 function renderFilters() {
   $('#branchFilter').innerHTML = `<button class="fchip ${state.branch === '' ? 'on' : ''}" data-b="">All branches</button>` +
@@ -563,7 +601,15 @@ function renderMembers() {
     (!q || p.name.toLowerCase().includes(q) || (p.spouse && p.spouse.toLowerCase().includes(q))) &&
     (state.branch === '' || String(p.branch) === state.branch) &&
     (!state.gen || String(p.gen) === state.gen));
-  $('#memberGrid').innerHTML = list.length ? list.map((p, i) => `
+  const filtered = !!(q || state.branch !== '' || state.gen);
+  const limit = filtered || state.expanded ? list.length : PREVIEW();
+  const shown = list.slice(0, limit);
+  const more = $('#moreRow'), btn = $('#moreBtn');
+  more.hidden = filtered || list.length <= PREVIEW();
+  btn.classList.toggle('open', state.expanded);
+  btn.querySelector('span').textContent = state.expanded ? 'Show fewer' : `Show all ${list.length} members`;
+  $('#moreNote').textContent = state.expanded ? '' : `Showing ${shown.length} of ${list.length}`;
+  $('#memberGrid').innerHTML = shown.length ? shown.map((p, i) => `
     <button class="card" type="button" data-id="${p.id}" style="--c:${colorOf(p)};animation-delay:${Math.min(i * 25, 500)}ms">
       ${av(p)}
       <strong>${esc(p.name)}</strong>
@@ -572,6 +618,10 @@ function renderMembers() {
     </button>`).join('') : `<div class="empty">No one matches “${esc(state.q)}”. Try another name.</div>`;
 }
 $('#q').addEventListener('input', e => { state.q = e.target.value; renderMembers(); });
+$('#moreBtn').addEventListener('click', () => {
+  state.expanded = !state.expanded; renderMembers();
+  if (!state.expanded) $('#members').scrollIntoView({behavior: 'smooth'});
+});
 $('#genSel').addEventListener('change', renderMembers);
 $('#branchFilter').addEventListener('click', e => { const b = e.target.closest('.fchip'); if (!b) return; state.branch = b.dataset.b; renderFilters(); renderMembers(); });
 $('#memberGrid').addEventListener('click', e => { const c = e.target.closest('.card'); if (c) openPerson(c.dataset.id); });
