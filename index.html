@@ -198,17 +198,27 @@ section.block{padding:96px 0}
 @keyframes pop{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
 
 /* gallery */
-.gallery{columns:3 280px;column-gap:16px}
-.ph{break-inside:avoid;margin:0 0 16px;position:relative;border-radius:14px;overflow:hidden;cursor:zoom-in;background:#efe4cc;box-shadow:0 8px 26px #5c462618}
-.ph img{width:100%;transition:transform .6s}
-.ph:hover img{transform:scale(1.05)}
-.ph figcaption{position:absolute;inset:auto 0 0;padding:30px 14px 12px;background:linear-gradient(transparent,#1f140cd0);color:#fff;font:italic 500 1.05rem var(--display);opacity:0;transform:translateY(8px);transition:.35s}
-.ph:hover figcaption,.ph:focus figcaption{opacity:1;transform:none}
-.ph.placeholder{cursor:default;display:grid;place-items:center;text-align:center;padding:26px;border:1.5px dashed #ae833d70;background:repeating-linear-gradient(45deg,#fbf2df,#fbf2df 12px,#f8edd5 12px,#f8edd5 24px);box-shadow:none}
-.ph.placeholder .icon{font-size:2rem;color:var(--gold)}
-.ph.placeholder strong{display:block;font:600 1.25rem var(--display);color:var(--brown)}
-.ph.placeholder small{color:var(--muted)}
-.gallery-note{text-align:center;color:var(--muted);font-size:.85rem;margin-top:10px}
+.gallery{position:relative;max-width:980px;margin:auto}
+.stage{position:relative;height:min(68vh,560px);border-radius:22px;overflow:hidden;background:#2a1d14;box-shadow:0 24px 60px #3d1d0f33;touch-action:pan-y}
+.track{display:flex;height:100%;transition:transform .7s cubic-bezier(.65,.05,.25,1)}
+.slide{position:relative;margin:0;flex:0 0 100%;height:100%;overflow:hidden;cursor:zoom-in}
+.slide .blur{position:absolute;inset:-30px;background:center/cover no-repeat;filter:blur(26px) brightness(.55);transform:scale(1.1)}
+.slide img{position:relative;width:100%;height:100%;object-fit:contain}
+.slide figcaption{position:absolute;inset:auto 0 0;padding:60px 24px 22px;background:linear-gradient(transparent,#140d08d9);color:#fff;font:italic 600 clamp(1.1rem,2.6vw,1.5rem) var(--display);text-align:center}
+.g-btn{position:absolute;top:50%;z-index:3;transform:translateY(-50%);width:50px;height:50px;border-radius:50%;border:0;background:#fffdf8e6;color:var(--brown);font-size:1.7rem;line-height:1;cursor:pointer;box-shadow:0 8px 24px #0004;transition:.25s;display:grid;place-items:center}
+.g-btn:hover{background:#fff;transform:translateY(-50%) scale(1.08)}
+.g-prev{left:14px}.g-next{right:14px}
+.g-bar{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:18px;flex-wrap:wrap}
+.dots{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.dot{width:10px;height:10px;padding:0;border-radius:99px;border:0;background:#ae833d55;cursor:pointer;transition:.35s}
+.dot.on{width:30px;background:var(--green)}
+.g-count{font:600 .85rem var(--body);color:var(--muted);min-width:52px;text-align:center}
+.g-play{border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:6px 14px;font-size:.8rem;font-weight:600;color:var(--brown);cursor:pointer}
+.g-progress{position:absolute;left:0;top:0;z-index:3;height:3px;width:0;background:var(--gold-lt)}
+.g-progress.run{width:100%;transition:width linear}
+.g-empty{display:grid;place-items:center;text-align:center;height:100%;color:#f3e7cf;padding:30px}
+.g-empty strong{display:block;font:600 1.5rem var(--display)}
+@media(max-width:640px){.stage{height:62vh;border-radius:16px}.g-btn{width:40px;height:40px;font-size:1.4rem}.g-prev{left:8px}.g-next{right:8px}}
 
 /* CTA */
 .cta{position:relative;overflow:hidden;border-radius:28px;padding:64px 30px;text-align:center;color:#fff;background:linear-gradient(135deg,#0f4d3d,#176f58 55%,#2f8a6f)}
@@ -398,8 +408,10 @@ const NETWORK_URL = 'https://mpfamily.anianilak47.chatgpt.site/';
 // or use full image links. Add as many as you like. If the list is empty, the gallery shows placeholder frames.
 const FOUNDERS_PHOTO = 'photos/founders.jpg';   // photo of Mudalappa & Puttamma ('' to hide)
 
+// The gallery is a slideshow: it moves to the next photo every SLIDE_SECONDS.
+const SLIDE_SECONDS = 3;
+
 const GALLERY = [
-  { src: 'photos/founders.jpg', caption: 'Mudalappa & Puttamma, the founders of our family' },
   { src: 'photos/reception-group.jpg', caption: 'The whole family together at a reception' },
   { src: 'photos/celebration-group.jpg', caption: 'All dressed up for the celebration' },
   { src: 'photos/fun-pose.jpg', caption: 'Striking a pose, family style' },
@@ -663,25 +675,76 @@ modal.addEventListener('click', e => {
 /* ---------- gallery ---------- */
 (function gallery() {
   const grid = $('#galleryGrid');
-  if (!GALLERY.length) {
-    const ph = [['Family reunion','A photo of everyone together'],['The founders','Mudalappa & Puttamma'],['Festivals','Ugadi, Deepavali, Sankranti…'],['Weddings','Celebrating new beginnings'],['The little ones','The newest generation'],['Old memories','Photos from years ago']];
-    const h = [260, 340, 220, 300, 240, 320];
-    grid.innerHTML = ph.map(([t, s], i) => `<figure class="ph placeholder" style="height:${h[i]}px"><div><div class="icon">❦</div><strong>${t}</strong><small>${s}<br>Photo coming soon</small></div></figure>`).join('');
-    grid.insertAdjacentHTML('afterend', '<p class="gallery-note">More photos are on the way. Share yours with the family to see them here.</p>');
+  const photos = GALLERY.filter(g => g && g.src);
+  if (!photos.length) {
+    grid.innerHTML = '<div class="stage"><div class="g-empty"><div><strong>Memories coming soon</strong>Photos of our family will appear here.</div></div></div>';
     return;
   }
-  grid.innerHTML = GALLERY.map((g, i) => `<figure class="ph" tabindex="0" data-i="${i}"><img src="${esc(g.src)}" alt="${esc(g.caption || 'MP family photo')}" loading="lazy">${g.caption ? `<figcaption>${esc(g.caption)}</figcaption>` : ''}</figure>`).join('');
-  const lb = $('#lightbox'); let cur = 0;
-  const show = (i) => { cur = (i + GALLERY.length) % GALLERY.length; $('#lbImg').src = GALLERY[cur].src; $('#lbImg').alt = GALLERY[cur].caption || ''; $('#lbCap').textContent = GALLERY[cur].caption || ''; };
-  const open = (i) => { show(i); lb.classList.add('open'); document.body.style.overflow = 'hidden'; };
-  const close = () => { lb.classList.remove('open'); document.body.style.overflow = ''; };
-  grid.addEventListener('click', e => { const f = e.target.closest('.ph'); if (f) open(+f.dataset.i); });
-  grid.addEventListener('keydown', e => { const f = e.target.closest('.ph'); if (f && e.key === 'Enter') open(+f.dataset.i); });
-  $('#lbPrev').onclick = () => show(cur - 1); $('#lbNext').onclick = () => show(cur + 1); $('#lbClose').onclick = close;
+  grid.innerHTML = `
+    <div class="stage" id="gStage" aria-roledescription="carousel" aria-label="Family photos">
+      <div class="g-progress" id="gProg"></div>
+      <div class="track" id="gTrack">${photos.map((g, i) => `
+        <figure class="slide" data-i="${i}" role="group" aria-roledescription="slide" aria-label="${i + 1} of ${photos.length}">
+          <div class="blur" style="background-image:url('${esc(g.src)}')"></div>
+          <img src="${esc(g.src)}" alt="${esc(g.caption || 'MP family photo')}" ${i > 1 ? 'loading="lazy"' : ''}>
+          ${g.caption ? `<figcaption>${esc(g.caption)}</figcaption>` : ''}
+        </figure>`).join('')}
+      </div>
+      ${photos.length > 1 ? '<button class="g-btn g-prev" id="gPrev" type="button" aria-label="Previous photo">‹</button><button class="g-btn g-next" id="gNext" type="button" aria-label="Next photo">›</button>' : ''}
+    </div>
+    ${photos.length > 1 ? `<div class="g-bar">
+      ${photos.length <= 15 ? `<div class="dots" id="gDots">${photos.map((_, i) => `<button class="dot" type="button" data-i="${i}" aria-label="Photo ${i + 1}"></button>`).join('')}</div>` : ''}
+      <span class="g-count" id="gCount"></span>
+      <button class="g-play" id="gPlay" type="button">❚❚ Pause</button>
+    </div>` : ''}`;
+
+  const track = $('#gTrack'), stage = $('#gStage'), prog = $('#gProg');
+  let cur = 0, timer = null, paused = false, hovering = false;
+  const n = photos.length;
+  function go(i, user) {
+    cur = (i + n) % n;
+    track.style.transform = `translateX(${-cur * 100}%)`;
+    document.querySelectorAll('#gDots .dot').forEach((d, k) => d.classList.toggle('on', k === cur));
+    if ($('#gCount')) $('#gCount').textContent = `${cur + 1} / ${n}`;
+    if (user) restart();
+  }
+  function stop() { clearTimeout(timer); timer = null; prog.classList.remove('run'); prog.style.transitionDuration = '0s'; prog.style.width = '0'; }
+  function restart() {
+    stop();
+    if (n < 2 || paused || hovering || document.hidden || $('#lightbox').classList.contains('open')) return;
+    requestAnimationFrame(() => { prog.style.width = ''; prog.style.transitionDuration = SLIDE_SECONDS + 's'; prog.classList.add('run'); });
+    timer = setTimeout(() => go(cur + 1, true), SLIDE_SECONDS * 1000);
+  }
+  if (n > 1) {
+    $('#gPrev').onclick = () => go(cur - 1, true);
+    $('#gNext').onclick = () => go(cur + 1, true);
+    $('#gDots')?.addEventListener('click', e => { const d = e.target.closest('.dot'); if (d) go(+d.dataset.i, true); });
+    $('#gPlay').onclick = () => { paused = !paused; $('#gPlay').textContent = paused ? '▶ Play' : '❚❚ Pause'; restart(); };
+    stage.addEventListener('mouseenter', () => { hovering = true; restart(); });
+    stage.addEventListener('mouseleave', () => { hovering = false; restart(); });
+    let sx = 0, sy = 0;
+    stage.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, {passive: true});
+    stage.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) go(cur + (dx < 0 ? 1 : -1), true);
+    });
+    stage.addEventListener('keydown', e => { if (e.key === 'ArrowRight') go(cur + 1, true); if (e.key === 'ArrowLeft') go(cur - 1, true); });
+    document.addEventListener('visibilitychange', restart);
+    new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) restart(); else stop(); }), {threshold: .3}).observe(stage);
+  }
+  go(0);
+
+  // Full-screen viewer
+  const lb = $('#lightbox'); let lcur = 0;
+  const show = (i) => { lcur = (i + n) % n; $('#lbImg').src = photos[lcur].src; $('#lbImg').alt = photos[lcur].caption || ''; $('#lbCap').textContent = photos[lcur].caption || ''; };
+  const open = (i) => { stop(); show(i); lb.classList.add('open'); document.body.style.overflow = 'hidden'; };
+  const close = () => { lb.classList.remove('open'); document.body.style.overflow = ''; go(lcur); restart(); };
+  track.addEventListener('click', e => { const f = e.target.closest('.slide'); if (f) open(+f.dataset.i); });
+  $('#lbPrev').onclick = () => show(lcur - 1); $('#lbNext').onclick = () => show(lcur + 1); $('#lbClose').onclick = close;
   lb.addEventListener('click', e => { if (e.target === lb) close(); });
-  document.addEventListener('keydown', e => { if (!lb.classList.contains('open')) return; if (e.key === 'Escape') close(); if (e.key === 'ArrowLeft') show(cur - 1); if (e.key === 'ArrowRight') show(cur + 1); });
-  let sx = 0; lb.addEventListener('touchstart', e => sx = e.touches[0].clientX, {passive: true});
-  lb.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1)); });
+  document.addEventListener('keydown', e => { if (!lb.classList.contains('open')) return; if (e.key === 'Escape') close(); if (e.key === 'ArrowLeft') show(lcur - 1); if (e.key === 'ArrowRight') show(lcur + 1); });
+  let lx = 0; lb.addEventListener('touchstart', e => lx = e.touches[0].clientX, {passive: true});
+  lb.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - lx; if (Math.abs(dx) > 50) show(lcur + (dx < 0 ? 1 : -1)); });
 })();
 
 /* ---------- scroll effects ---------- */
