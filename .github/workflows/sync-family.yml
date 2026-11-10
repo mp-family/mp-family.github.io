@@ -3,7 +3,12 @@ name: Sync family tree
 on:
   schedule:
     - cron: "*/15 * * * *"   # every 15 minutes
-  workflow_dispatch:          # "Run workflow" button for an instant sync
+  workflow_dispatch:          # "Run workflow" button / cron-job.org trigger
+    inputs:
+      strict:
+        description: "Fail the run if the Family Network can't be reached"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -18,6 +23,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Fetch latest tree from the Family Network
+        env:
+          STRICT: ${{ inputs.strict }}
         run: python3 .github/scripts/sync_family.py
       - name: Save changes
         run: |

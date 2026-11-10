@@ -6,7 +6,7 @@ import json, os, re, sys, urllib.request
 
 SOURCE = os.environ.get("FAMILY_SOURCE", "https://mpfamily.anianilak47.chatgpt.site/api/family")
 OUT = "data/family.json"
-STRICT = os.environ.get("GITHUB_EVENT_NAME") == "workflow_dispatch"
+STRICT = os.environ.get("STRICT", "").lower() == "true"
 
 PHONE = re.compile(r"ph\s*no|phone|mobile|\d{6,}", re.I)
 
