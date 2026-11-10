@@ -204,16 +204,7 @@
      "relation": "Son",
      "tooltip": "",
      "entryType": "individual",
-     "children": [
-      {
-       "id": "person-6ab2c5f8-be9b-4dec-b158-0cf2fb2ecce3",
-       "name": "Test",
-       "relation": "Son",
-       "tooltip": "",
-       "entryType": "individual",
-       "children": []
-      }
-     ],
+     "children": [],
      "birthYear": 1995
     }
    ]
